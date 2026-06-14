@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "665514511694",
+    "project_id": "test-6689e",
+    "storage_bucket": "test-6689e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:665514511694:android:80d45468bcf1cdd8c3221f",
+        "android_client_info": {
+          "package_name": "com.example.school_notifications"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbKrU7wbYpZq52OozMYIvIjEZQoRlensI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:665514511694:android:f705f0a7c9f0c9ddc3221f",
+        "android_client_info": {
+          "package_name": "com.school.notifications"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbKrU7wbYpZq52OozMYIvIjEZQoRlensI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

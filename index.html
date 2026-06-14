@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Notification Sender</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      background: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .box {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      width: 320px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    input, textarea {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    .msg {
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .success { color: green; }
+    .error { color: red; }
+
+    .loading {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid #f3f3f3;
+      border-top: 2px solid #007bff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-left: 5px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="box">
+  <h3>Send Notification</h3>
+
+  <input id="title" placeholder="Title">
+  <textarea id="body" placeholder="Message"></textarea>
+
+  <button onclick="sendNotification()" id="sendBtn">Send</button>
+
+  <div class="msg" id="msg"></div>
+</div>
+
+<script>
+  // 🔥 Supabase config (عدّل فقط إذا تغير مشروعك)
+  const SUPABASE_URL = "https://zzmqrqazvwcdanjxtlme.supabase.co";
+  const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp6bXFycWF6dndjZGFuanh0bG1lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0MzQ4MjMsImV4cCI6MjA5NzAxMDgyM30.l9xp0F6OsbQKETtdimklZF7EobDS69uQdv-WOs8YK78";
+
+  async function sendNotification() {
+    const title = document.getElementById("title").value;
+    const body = document.getElementById("body").value;
+    const msg = document.getElementById("msg");
+    const btn = document.getElementById("sendBtn");
+
+    if (!title || !body) {
+      msg.className = "msg error";
+      msg.innerText = "Please fill all fields";
+      return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = "Sending <span class='loading'></span>";
+    msg.innerText = "";
+
+    try {
+      const res = await fetch(
+        SUPABASE_URL + "/rest/v1/notifications",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "apikey": SUPABASE_KEY,
+            "Authorization": "Bearer " + SUPABASE_KEY,
+            "Prefer": "return=representation"
+          },
+          body: JSON.stringify({
+            title: title,
+            body: body
+          })
+        }
+      );
+
+      const data = await res.json();
+
+      if (res.ok) {
+        msg.className = "msg success";
+        msg.innerText = "✅ Notification sent successfully!";
+        document.getElementById("title").value = "";
+        document.getElementById("body").value = "";
+      } else {
+        msg.className = "msg error";
+        msg.innerText = "❌ Error: " + (data.message || "Request failed");
+      }
+
+    } catch (err) {
+      msg.className = "msg error";
+      msg.innerText = "❌ Error: " + err.message;
+    }
+
+    btn.disabled = false;
+    btn.innerHTML = "Send";
+  }
+</script>
+
+</body>
+</html>
